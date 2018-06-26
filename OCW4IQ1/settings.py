@@ -25,7 +25,7 @@ SECRET_KEY = 'bzvd3j8gz694w63!!^_1%0*q#3y)6x+ij&+bla(jn#$wwbqq=x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -54,7 +54,9 @@ ROOT_URLCONF = 'OCW4IQ1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+			os.path.join(BASE_DIR, 'templates'),
+			],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
