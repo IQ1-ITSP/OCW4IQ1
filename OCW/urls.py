@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     #url(r'^$', views.test_response),
-    url(r'$', views.search_result),
+    url('^$', views.toppage),
+    url('abc/', views.search_and_result),
 ]
