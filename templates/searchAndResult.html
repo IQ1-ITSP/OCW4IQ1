@@ -23,24 +23,26 @@
                 <div class="p-3 pt-5">
                     <h2>検索結果</h2>
                 </div>
-                <table class="table table-responsive">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th> {{ result_head.quarter }} </th>
-                            <th> {{ result_head.lecname }} </th>
-                            <th> {{ result_head.teacher }} </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in result_content %}
-                        <tr>
-                            <td> {{ item.quarter }} </td>
-                            <td> {{ item.lecname }} </td>
-                            <td> {{ item.teacher }} </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> {{ result_head.quarter }} </th>
+                                <th> {{ result_head.lecname }} </th>
+                                <th> {{ result_head.teacher }} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in result_content %}
+                            <tr>
+                                <td> {{ item.quarter }} </td>
+                                <td> {{ item.lecname }} </td>
+                                <td> {{ item.teacher }} </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </body>
