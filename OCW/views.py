@@ -25,3 +25,13 @@ def search_and_result(request):
 
     }
     return render(request, 'searchAndResult.html', d)
+
+
+def lecture(request):
+	d = {
+			'name' : '講義名1',
+			'quarter' : '1Q',
+			'teacher' : '教員A',
+			'department' : '情報理工学院',
+			}
+	return render(request,'lecture.html',d)

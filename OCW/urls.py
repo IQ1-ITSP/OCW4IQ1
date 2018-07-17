@@ -5,4 +5,5 @@ urlpatterns = [
     #url(r'^$', views.test_response),
     url('^$', views.toppage),
     url('abc/', views.search_and_result),
+	url('lecture/',views.lecture),
 ]
