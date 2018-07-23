@@ -20,37 +20,21 @@
         <div class="container">
             <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
-                    <h3>授業名で検索</h3>
+                    <h3> {{name}} </h3>
                 </div>
-                <div class="p-3">
-                    <form action="/abc" method="GET">
-                        <div class="form-group">
-                            <label for="">授業名</label>
-                            <input type="lecture" class="form-control" name="lectureName">
-                        </div>
-                        <button type="submit" class="btn btn-dark float-right">検索</button>
-                    </form>
+                <div class="p-3 pt-3">
+                    <h6> 開講クォーター : {{quarter}}</h6>
+                    <h6> 教員名 : {{teacher}} </h6>
+                    <h6> 開講元 : {{department}} </h6>
+                    <h6> 開講時間 </h6>
+                    <h6> 講義室 </h6>
+                    <h6> 単位数 </h6>
+                    <h6> 言語 </h6>
                 </div>
-            </div>
-        </div>
 
-
-
-        <div class="container">
-            <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
-                    <h3>所属から選択</h3>
-                </div>
-                <div class="p-3">
-                    <ul class="list-group">
-                        <li class="list-group-item">理学院</li>
-                        <li class="list-group-item">工学院</li>
-                        <li class="list-group-item">物質理工学院</li>
-                        <li class="list-group-item">情報理工学院</li>
-                        <li class="list-group-item">生命理工学院</li>
-                        <li class="list-group-item">環境・社会理工学院</li>
-                        <li class="list-group-item">その他</li>
-                    </ul>
+                    <h5> 授業詳細 </h5>
+                    ここに授業の内容とか....についての詳しい情報を...
                 </div>
             </div>
         </div>
