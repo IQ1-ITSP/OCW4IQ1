@@ -35,13 +35,13 @@ def search_and_result(request):
 
 def lecture(request):
     # クエリから得られる情報
-    lecname = request.GET.get("lecname")    # 講義名
+    #lecname = request.GET.get("lecname")    # 講義名
 
     # 情報からのデータ構築
     d = {
-            'name' : lecname,
-            'quarter' : '1Q',
-            'teacher' : '教員A',
-            'department' : '情報理工学院',
+            'name' : "文系エッセンス1 : 人間力を育む Essence of Humanities and Social",
+            'quarter' : '2Q',
+            'teacher' : '中野 民夫',
+            'department' : '文系教養科目',
             }
     return render(request,'lecture.html',d)
