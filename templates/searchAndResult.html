@@ -9,6 +9,24 @@
         <div class="container">
             <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
+                    <h3>検索</h3>
+                </div>
+                <div class="p-3">
+                    <form action="/abc" method="GET">
+                        <div class="form-group">
+                            <!-- <label for="">授業名</label> -->
+                            <input type="lecture" class="form-control" name="lectureName">
+                        </div>
+                        <button type="submit" class="btn btn-dark float-right">検索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="pt-5 pb-5">
+                <div class="p-3 pt-5">
+                    <h2>検索結果</h2>
                     <h2> {{lectureName}} 検索結果</h2>
                 </div>
                 <div class="table-responsive">
