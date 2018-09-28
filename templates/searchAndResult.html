@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" name="viewport">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>検索結果(仮)</title>
+        <title>検索結果</title>
         <!-- BootStrap4 -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -39,6 +39,7 @@
             <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
                     <h2>検索結果</h2>
+                    <h2> {{lectureName}} 検索結果</h2>
                 </div>
                 <div class="table-responsive">
                     <table class="table">
@@ -53,7 +54,8 @@
                             {% for item in result_content %}
                             <tr>
                                 <td> {{ item.quarter }} </td>
-                                <td> {{ item.lecname }} </td>
+                                <!-- <td> {{ item.lecname }} </td> -->
+                                <td> <a href="{% url 'app:lecture' %}?lecname={{item.lecname}}"> {{item.lecname}}</a></td>
                                 <td> {{ item.teacher }} </td>
                             </tr>
                             {% endfor %}
