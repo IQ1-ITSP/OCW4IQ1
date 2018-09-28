@@ -20,10 +20,10 @@ def search_and_result(request):
 
     # リクエストに応じてDBから情報を取得
     # TODO 
-    content = [('1Q', '講義名1', '教員名3'), ('2Q', '講義名2', '教員名2'), ('1Q', '講義名3', '教員名3')]
+    content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
     result_content = []
     for item in content:
-        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2]})
+        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] })
 
     d = {
         'result_head': result_head,
@@ -34,10 +34,14 @@ def search_and_result(request):
 
 
 def lecture(request):
-	d = {
-			'name' : '講義名1',
-			'quarter' : '1Q',
-			'teacher' : '教員A',
-			'department' : '情報理工学院',
-			}
-	return render(request,'lecture.html',d)
+    # クエリから得られる情報
+    lecname = request.GET.get("lecname")    # 講義名
+
+    # 情報からのデータ構築
+    d = {
+            'name' : lecname,
+            'quarter' : '1Q',
+            'teacher' : '教員A',
+            'department' : '情報理工学院',
+            }
+    return render(request,'lecture.html',d)
