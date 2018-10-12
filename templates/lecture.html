@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ name }} 詳細情報
+{{ LectureName }} 詳細情報
 {% endblock %}
 
 {% block body %}
@@ -9,21 +9,26 @@
         <div class="container">
             <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
-                    <h3> {{name}} </h3>
+                    <h3> {{LectureName}} </h3>
                 </div>
                 <div class="p-3 pt-3">
-                    <h6> 開講クォーター : {{quarter}}</h6>
-                    <h6> 教員名 : {{teacher}} </h6>
-                    <h6> 開講元 : {{department}} </h6>
-                    <h6> 開講時間 </h6>
-                    <h6> 講義室 </h6>
-                    <h6> 単位数 </h6>
-                    <h6> 言語 </h6>
+                    <h6> 開講クォーター : {{Quater}}</h6>
+                    <h6> 教員名 : {{Professor}} </h6>
+                    <h6> 開講元 : {{Course}} </h6>
+                    <h6> 開講時間 : {{DateRoom}}</h6>
+                    <h6> 講義室 : {{DateRoom}}</h6>
+                    <h6> 単位数 : {{TANI}}</h6>
+                    <h6> 言語 : {{Language}}</h6>
                 </div>
 
                 <div class="p-3 pt-5">
                     <h5> 授業詳細 </h5>
-                    ここに授業の内容とか....についての詳しい情報を...
+                     評価方法：{{HyoukaStyle}}<br>
+                     履修条件：{{RisyuJoken}}
+                    <!--
+                      ここに授業の内容とか....についての詳しい情報を...
+                    -->
+
                 </div>
             </div>
         </div>

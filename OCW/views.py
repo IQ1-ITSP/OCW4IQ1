@@ -1,6 +1,15 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
+import pymysql
 
+def db_connect():
+    return pymysql.connect(host='localhost',
+                             user='root',
+                             password='',
+                             db='test_ocw',
+                             charset='utf8',
+                             # Selectの結果をdictionary形式で受け取る
+                             cursorclass=pymysql.cursors.DictCursor)
 
 # Create your views here.
 def test_response(request):
@@ -19,9 +28,19 @@ def search_and_result(request):
 
 
     # リクエストに応じてDBから情報を取得
-    # TODO 
+    # TODO
+
     content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
     result_content = []
+
+    #SQL kakeru baai
+    with db_connect().cursor() as cursor:
+        sql = "SELECT Quater,LectureName,Professor FROM lecture WHERE LectureName like '%{}%'".format(lecname)
+        cursor.execute(sql)
+        dbdata = cursor.fetchall()
+        for row in dbdata:
+            content.append((row["Quater"],row["LectureName"],row["Professor"]))
+
     for item in content:
         result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] })
 
@@ -35,15 +54,16 @@ def search_and_result(request):
 
 def lecture(request):
     # クエリから得られる情報
-    #lecname = request.GET.get("lecname")    # 講義名
+    lecname = request.GET.get("lecname")    # 講義名
 
     # 情報からのデータ構築
-    d = {
-            'name' : "文系エッセンス1 : 人間力を育む Essence of Humanities and Social",
-            'quarter' : '2Q',
-            'teacher' : '中野 民夫',
-            'department' : '文系教養科目',
-            }
+    d = {}
+    with db_connect().cursor() as cursor:
+        sql = "SELECT * FROM lecture WHERE LectureName like '{}'".format(lecname)
+        cursor.execute(sql)
+        dbdata = cursor.fetchall()
+        d = dbdata[0]
+
     return render(request,'lecture.html',d)
 
 
