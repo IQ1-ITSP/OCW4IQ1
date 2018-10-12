@@ -16,10 +16,39 @@
     </head>
 
     <body>
+        <!-- トップ -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <!-- navbar-dark : 文字色白 , bg-dark : 背景黒 -->
             <a class="navbar-brand" href="#">IQ1でもわかるOCW > {{department_name}}</a>
             <!-- TODO 必要ならばトグルメニューを追加 -->
         </nav>
+
+        <!-- タイトル -->
+        <!-- TODO  margin-topで指定しないとnavbarと重なるのなんとかならないかなぁ -->
+        <div class="container-fluid" style="margin-top:80px">
+            <h3> {{department_name}} の授業一覧 </h3>
+        </div>
+
+
+        <!-- 結果の表示テーブル -->
+        <table class="table">
+            <thead class="thead-dark">
+            </thead>
+                <th scope="col">授業名</th>
+                <th scope="col">担当教員</th>
+                <th scope="col">単位</th>
+            <tbody>
+                <tr>
+                    <td>aaa</td>
+                    <td>bbb</td>
+                    <td>ccc</td>
+                </tr>
+                <tr>
+                    <td>ddd</td>
+                    <td>eee</td>
+                    <td>fff</td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
