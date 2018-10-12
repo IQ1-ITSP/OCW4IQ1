@@ -45,3 +45,32 @@ def lecture(request):
             'department' : '文系教養科目',
             }
     return render(request,'lecture.html',d)
+
+
+def department_page(request):
+    print(request)
+    request_param = request.GET.get('dep')
+
+    def param2name(param):
+        if param == "rigakuin":
+            return "理学院"
+        elif param == "kougakuin":
+            return "工学院"
+        elif param == "bussitsu":
+            return "物質理工学院"
+        elif param == "jouhou":
+            return "情報理工学院"
+        elif param == "seimei":
+            return "生命理工学院"
+        elif param == "kankyo":
+            return "環境・社会理工学院"
+        elif param == "sonota":
+            return "その他"
+
+    department_name = param2name(request_param)
+
+    d = {
+        'department_name' : department_name,
+        }
+    print(d)
+    return render(request,'department.html',d)
