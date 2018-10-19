@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
 import pymysql
+import ast
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                             user='root',
-                             password='',
-                             db='test_ocw',
-                             charset='utf8',
-                             # Selectの結果をdictionary形式で受け取る
-                             cursorclass=pymysql.cursors.DictCursor)
+                                 user='root',
+                                 password='',
+                                 db='test_ocw',
+                                 charset='utf8',
+                                 # Selectの結果をdictionary形式で受け取る
+                                 cursorclass=pymysql.cursors.DictCursor)
 
 # Create your views here.
 def test_response(request):
@@ -30,19 +31,20 @@ def search_and_result(request):
     # リクエストに応じてDBから情報を取得
     # TODO
 
-    content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
+    #content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
+    content = []
     result_content = []
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT Quater,LectureName,Professor FROM lecture WHERE LectureName like '%{}%'".format(lecname)
+        sql = "SELECT Quarter,LectureName,Professor,LectureCode FROM lecture WHERE LectureName like '%{}%'".format(lecname)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
         for row in dbdata:
-            content.append((row["Quater"],row["LectureName"],row["Professor"]))
+            content.append((row["Quarter"],row["LectureName"],row["Professor"],row["LectureCode"]))
 
     for item in content:
-        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] })
+        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] , 'code': item[3]})
 
     d = {
         'result_head': result_head,
@@ -54,15 +56,18 @@ def search_and_result(request):
 
 def lecture(request):
     # クエリから得られる情報
-    lecname = request.GET.get("lecname")    # 講義名
+    code = request.GET.get("code")    # 講義名
 
     # 情報からのデータ構築
     d = {}
     with db_connect().cursor() as cursor:
-        sql = "SELECT * FROM lecture WHERE LectureName like '{}'".format(lecname)
+        sql = "SELECT * FROM lecture WHERE LectureCode like '{}'".format(code)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
         d = dbdata[0]
+
+    d["LecturePlan"] = [{"term":p[0],"plan":p[1],"task":p[2]} \
+        for p in ast.literal_eval(d["LecturePlan"].replace("\r","\\r").replace("\n","\\n"))]
 
     return render(request,'lecture.html',d)
 
