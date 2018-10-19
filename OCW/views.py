@@ -67,7 +67,10 @@ def lecture(request):
         d = dbdata[0]
 
     d["LecturePlan"] = [{"term":p[0],"plan":p[1],"task":p[2]} \
-        for p in ast.literal_eval(d["LecturePlan"].replace("\r","\\r").replace("\n","\\n"))]
+        for p in ast.literal_eval(d["LecturePlan"].replace("\'","\\\'")
+                                                    .replace("\\\\'","\'")
+                                                    .replace("\r","\\r")
+                                                    .replace("\n","\\n"))]
 
     return render(request,'lecture.html',d)
 
