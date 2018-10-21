@@ -12,8 +12,28 @@
                 <div class="p-3 pt-5">
                     <h2> {{gakuin_name}} の授業一覧</h2>
                 </div>
+
+                <div class="pt-1 pb-3">
+                    <h4> 開講元 </h4>
+                    {% for item in opening_department_list %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id)">
+                        <label class="form-check-label"> {{ item }} </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pt-1 pb-4">
+                    <h4> 番台 </h4>
+                    {% for item in series_list %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id)">
+                        <label class="form-check-label"> {{ item }} </label>
+                    </div>
+                    {% endfor %}
+                </div>
+
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" style='table-layout:fixed'>
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ result_head.lecname }} </th>
@@ -23,8 +43,8 @@
                         </thead>
                         <tbody>
                             {% for item in result_content %}
-                            <tr>
-                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}"> {{item.lecname}}</a></td>
+                            <tr class="{{ item.opening_department }} {{ item.series }}" style="">
+                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
                                 <td> {{ item.opening_department }} </td>
                                 <td> {{ item.teacher }} </td>
                             </tr>
@@ -34,5 +54,19 @@
                 </div>
             </div>
         </div>
+        <script>
+            function toggleVisibility(_id) {
+                console.log(_id);
+                var rows = document.getElementsByClassName(_id)
+                for (var row of rows) {
+                    style = row.getAttribute("style");
+                    console.log(style);
+                    if (style == '')
+                        row.setAttribute("style", 'display: none;');
+                    else
+                        row.setAttribute("style", '');
+                }
+            }
+        </script>
 
 {% endblock %}
