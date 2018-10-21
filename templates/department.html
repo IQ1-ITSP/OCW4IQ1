@@ -17,7 +17,7 @@
                     <h4> 開講元 </h4>
                     {% for item in opening_department_list %}
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id)">
+                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id, 'data-opening_department')">
                         <label class="form-check-label"> {{ item }} </label>
                     </div>
                     {% endfor %}
@@ -26,16 +26,17 @@
                     <h4> 番台 </h4>
                     {% for item in series_list %}
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id)">
+                        <input class="form-check-input" type="checkbox" id="{{ item }}" checked="checked" onchange="toggleVisibility(id, 'data-series')">
                         <label class="form-check-label"> {{ item }} </label>
                     </div>
                     {% endfor %}
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table" style='table-layout:fixed'>
+                    <table class="table">
                         <thead class="thead-dark">
                             <tr>
+                                <th> {{ result_head.series }} </th>
                                 <th> {{ result_head.lecname }} </th>
                                 <th> {{ result_head.opening_department }} </th>
                                 <th> {{ result_head.teacher }} </th>
@@ -43,7 +44,8 @@
                         </thead>
                         <tbody>
                             {% for item in result_content %}
-                            <tr class="{{ item.opening_department }} {{ item.series }}" style="">
+                            <tr class="{{ item.opening_department }} {{ item.series }}" style="" data-series="true" data-opening_department="true">
+                                <td> {{ item.series }} </td>
                                 <td> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
                                 <td> {{ item.opening_department }} </td>
                                 <td> {{ item.teacher }} </td>
@@ -55,16 +57,22 @@
             </div>
         </div>
         <script>
-            function toggleVisibility(_id) {
+            function toggleVisibility(_id, data_type) {
                 console.log(_id);
                 var rows = document.getElementsByClassName(_id)
+
                 for (var row of rows) {
-                    style = row.getAttribute("style");
-                    console.log(style);
-                    if (style == '')
-                        row.setAttribute("style", 'display: none;');
+                    series = row.getAttribute(data_type);
+                    if (series === 'true')
+                        row.setAttribute(data_type, 'false');
                     else
+                        row.setAttribute(data_type, 'true');
+
+                    style = row.getAttribute("style");
+                    if (row.getAttribute('data-series') === 'true' && row.getAttribute('data-opening_department') === 'true')
                         row.setAttribute("style", '');
+                    else
+                        row.setAttribute("style", 'display: none;');
                 }
             }
         </script>
