@@ -42,7 +42,7 @@
                             <tr>
                                 <td> {{ item.quarter }} </td>
                                 <!-- <td> {{ item.lecname }} </td> -->
-                                <td> <a href="{% url 'app:lecture' %}?lecname={{item.lecname}}"> {{item.lecname}}</a></td>
+                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}"> {{item.lecname}}</a></td>
                                 <td> {{ item.teacher }} </td>
                             </tr>
                             {% endfor %}
