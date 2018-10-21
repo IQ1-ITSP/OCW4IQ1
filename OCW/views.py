@@ -7,7 +7,7 @@ def db_connect():
     return pymysql.connect(host='localhost',
                                  user='root',
                                  password='',
-                                 db='test_ocw',
+                                 db='webapp_test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
                                  cursorclass=pymysql.cursors.DictCursor)
@@ -76,8 +76,8 @@ def lecture(request):
 
 
 def department_page(request):
-    print(request)
     request_param = request.GET.get('dep')
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -95,10 +95,30 @@ def department_page(request):
         elif param == "sonota":
             return "その他"
 
-    department_name = param2name(request_param)
+    gakuin_name = param2name(request_param)
+
+    with db_connect().cursor() as cursor:
+        sql = "SELECT LectureName,Department,Professor,LectureCode FROM lecture WHERE Gakuin like '%s'" % gakuin_name
+        cursor.execute(sql)
+        dbdata = cursor.fetchall()
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"]) for row in dbdata)
+
+    result_content = list(
+            {
+                'lecname': item[0],
+                'opening_department': item[1],
+                'teacher': item[2],
+                'code': item[3],
+                'series': '%s00' % item[3][-3:-2:]
+                } for item in content)
+    series_list = sorted({row['series'] for row in result_content})
+    opening_department_list = sorted({row['opening_department'] for row in result_content})
 
     d = {
-        'department_name' : department_name,
+        'result_head' : result_head,
+        'result_content' : result_content,
+        'series_list' : series_list,
+        'opening_department_list' : opening_department_list,
+        'gakuin_name' : gakuin_name,
         }
-    print(d)
     return render(request,'department.html',d)
