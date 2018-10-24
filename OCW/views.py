@@ -5,9 +5,9 @@ import ast
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='',
-                                 db='webapp_test',
+                                 user='chakku',
+                                 password='chakku',
+                                 db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
                                  cursorclass=pymysql.cursors.DictCursor)
@@ -77,7 +77,7 @@ def lecture(request):
 
 def department_page(request):
     request_param = request.GET.get('dep')
-    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名'}
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -98,10 +98,10 @@ def department_page(request):
     gakuin_name = param2name(request_param)
 
     with db_connect().cursor() as cursor:
-        sql = "SELECT LectureName,Department,Professor,LectureCode FROM lecture WHERE Gakuin like '%s'" % gakuin_name
+        sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom FROM lecture WHERE Gakuin like '%s'" % gakuin_name
         cursor.execute(sql)
         dbdata = cursor.fetchall()
-        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"]) for row in dbdata)
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"]) for row in dbdata)
 
     result_content = list(
             {
@@ -109,7 +109,8 @@ def department_page(request):
                 'opening_department': item[1],
                 'teacher': item[2],
                 'code': item[3],
-                'series': '%s00' % item[3][-3:-2:]
+                'series': '%s00' % item[3][-3:-2:],
+                'dateroom': item[4]
                 } for item in content)
     series_list = sorted({row['series'] for row in result_content})
     opening_department_list = sorted({row['opening_department'] for row in result_content})
