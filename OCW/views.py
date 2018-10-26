@@ -98,7 +98,8 @@ def department_page(request):
     gakuin_name = param2name(request_param)
 
     with db_connect().cursor() as cursor:
-        sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom FROM lecture WHERE Gakuin like '%s'" % gakuin_name
+        sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom \
+                FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name
         cursor.execute(sql)
         dbdata = cursor.fetchall()
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"]) for row in dbdata)
