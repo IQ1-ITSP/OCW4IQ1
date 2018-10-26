@@ -97,5 +97,4 @@ def department_page(request):
 
 
 def base_layout(request):
-    print('BASE LAYOUT')
     return render(request,'base.html')
