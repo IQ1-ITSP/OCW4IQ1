@@ -21,4 +21,6 @@ urlpatterns = [
     path('',include(('OCW.urls','OCW'),)),
     path('OCW/',include(('OCW.urls','OCW'),)),
     path('admin/', admin.site.urls),
+    path('', include(('pwa.urls', 'pwa'),)),
+    path('OCW/', include(('pwa.urls', 'pwa'),)),
 ]

@@ -8,4 +8,5 @@ urlpatterns = [
     url('abc/', views.search_and_result),
 	url('lecture/',views.lecture,name='lecture'),
 	url('department/',views.department_page,name='department'),
+    url('base_layout/',views.base_layout,name='base_layout'),
 ]

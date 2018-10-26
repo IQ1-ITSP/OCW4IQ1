@@ -94,3 +94,8 @@ def department_page(request):
         }
     print(d)
     return render(request,'department.html',d)
+
+
+def base_layout(request):
+    print('BASE LAYOUT')
+    return render(request,'base.html')
