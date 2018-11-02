@@ -77,7 +77,7 @@ def lecture(request):
 
 def department_page(request):
     request_param = request.GET.get('dep')
-    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)'}
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -101,7 +101,7 @@ def department_page(request):
         sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom,Quarter FROM lecture WHERE Gakuin like '%s'" % gakuin_name
         cursor.execute(sql)
         dbdata = cursor.fetchall()
-        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row['Quarter']+" "+ row["DateRoom"]) for row in dbdata)
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
 
     result_content = list(
             {
@@ -110,7 +110,8 @@ def department_page(request):
                 'teacher': item[2],
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
-                'dateroom': item[4]
+                'dateroom': item[4],
+				'quarter': item[5]
                 } for item in content)
     series_list = sorted({row['series'] for row in result_content})
     opening_department_list = sorted({row['opening_department'] for row in result_content})
