@@ -6,7 +6,7 @@ import ast
 def db_connect():
     return pymysql.connect(host='localhost',
                                  user='chakku',
-                                 password='chakku',
+                                 password='abcd',
                                  db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
@@ -98,10 +98,10 @@ def department_page(request):
     gakuin_name = param2name(request_param)
 
     with db_connect().cursor() as cursor:
-        sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom FROM lecture WHERE Gakuin like '%s'" % gakuin_name
+        sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom,Quarter FROM lecture WHERE Gakuin like '%s'" % gakuin_name
         cursor.execute(sql)
         dbdata = cursor.fetchall()
-        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"]) for row in dbdata)
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row['Quarter']+" "+ row["DateRoom"]) for row in dbdata)
 
     result_content = list(
             {
