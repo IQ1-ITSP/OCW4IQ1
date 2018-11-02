@@ -6,7 +6,7 @@ import ast
 def db_connect():
     return pymysql.connect(host='localhost',
                                  user='chakku',
-                                 password='chakku',
+                                 password='abcd',
                                  db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
@@ -77,7 +77,7 @@ def lecture(request):
 
 def department_page(request):
     request_param = request.GET.get('dep')
-    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)'}
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -98,15 +98,15 @@ def department_page(request):
     gakuin_name = param2name(request_param)
 
     with db_connect().cursor() as cursor:
+
         if gakuin_name=="その他":
-            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom \
+            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom,lecture.Quarter \
                     FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin IN ('{}','{}')".format("教養科目群","類科目")
         else:
-            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom \
-                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name
-        cursor.execute(sql)
+            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom,lecture.Quarter \
+                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name        cursor.execute(sql)
         dbdata = cursor.fetchall()
-        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"]) for row in dbdata)
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
 
     result_content = list(
             {
@@ -115,7 +115,8 @@ def department_page(request):
                 'teacher': item[2],
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
-                'dateroom': item[4]
+                'dateroom': item[4],
+				'quarter': item[5]
                 } for item in content)
     series_list = sorted({row['series'] for row in result_content})
     opening_department_list = sorted({row['opening_department'] for row in result_content})
