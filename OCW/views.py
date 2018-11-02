@@ -104,7 +104,8 @@ def department_page(request):
                     FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin IN ('{}','{}')".format("教養科目群","類科目")
         else:
             sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom,lecture.Quarter \
-                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name        cursor.execute(sql)
+                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name
+        cursor.execute(sql)
         dbdata = cursor.fetchall()
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
 
