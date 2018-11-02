@@ -1,54 +1,118 @@
-<!DOCTYPE html>
+<!--DOCTYPE html-->
+{% extends "base.html" %}
 
+{% block title %}
+{{ gakuin_name }}
+{% endblock %}
 <!-- 学院ごとのページ -->
 
+{% block body %}
 
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8" name="viewport" >
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>IQ1でもわかるOCW</title>
-        <!-- BootStrap4 -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-    </head>
+        <div class="container">
+            <div class="pt-5 pb-5">
+                <div class="p-3 pt-5">
+                    <h2> {{gakuin_name}} の授業一覧</h2>
+                </div>
 
-    <body>
-        <!-- トップ -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <!-- navbar-dark : 文字色白 , bg-dark : 背景黒 -->
-            <a class="navbar-brand" href="/">IQ1でもわかるOCW > {{department_name}}</a>
-            <!-- TODO 必要ならばトグルメニューを追加 -->
-        </nav>
+                <div class="pt-1 pb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"> 開講元 </h4>
+                            <div>
+                                {% for item in opening_department_list %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name="opening_department" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-opening_department')">
+                                    <label class="form-check-label"> {{ item }} </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-group float-right pt-2">
+                                <button class="btn btn-outline-primary" onclick="changeAllCheckboxes('opening_department', true)">全て選択</button>
+                                <button class="btn btn-outline-primary" onclick="changeAllCheckboxes('opening_department', false)">全て選択解除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- タイトル -->
-        <!-- TODO  margin-topで指定しないとnavbarと重なるのなんとかならないかなぁ -->
-        <div class="container-fluid" style="margin-top:80px">
-            <h3> {{department_name}} の授業一覧 </h3>
+                <div class="pt-1 pb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"> 番台 </h4>
+                            <div>
+                                {% for item in series_list %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" name="series" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-series')">
+                                    <label class="form-check-label"> {{ item }} </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-group float-right pt-2">
+                                <button class="btn btn-outline-primary" onclick="changeAllCheckboxes('series', true)">全て選択</button>
+                                <button class="btn btn-outline-primary" onclick="changeAllCheckboxes('series', false)">全て選択解除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> {{ result_head.series }} </th>
+                                <th> {{ result_head.lecname }} </th>
+                                <th> {{ result_head.opening_department }} </th>
+                                <th> {{ result_head.teacher }} </th>
+                                <th> {{ result_head.dateroom }} </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-lecture"> <!-- The attribute 'id' is used in changeAllCheckboxes. -->
+                            {% for item in result_content %}
+                            <tr class="{{ item.opening_department }} {{ item.series }}" style="" data-series="true" data-opening_department="true">
+                                <td> {{ item.series }} </td>
+                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
+                                <td> {{ item.opening_department }} </td>
+                                <td> {{ item.teacher }} </td>
+                                <td> {{ item.dateroom }} </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+        <script>
+            function changeVisibility(lecture_tuple) {
+                if (lecture_tuple.getAttribute('data-series') === 'true' && lecture_tuple.getAttribute('data-opening_department') === 'true')
+                    lecture_tuple.setAttribute("style", '');
+                else
+                    lecture_tuple.setAttribute("style", 'display: none;');
+            }
 
+            function checkboxListener(_id, data_type) {
+                var rows = document.getElementsByClassName(_id);
 
-        <!-- 結果の表示テーブル -->
-        <table class="table">
-            <thead class="thead-dark">
-            </thead>
-                <th scope="col">授業名</th>
-                <th scope="col">担当教員</th>
-                <th scope="col">単位</th>
-            <tbody>
-                <tr>
-                    <td>aaa</td>
-                    <td>bbb</td>
-                    <td>ccc</td>
-                </tr>
-                <tr>
-                    <td>ddd</td>
-                    <td>eee</td>
-                    <td>fff</td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
-</html>
+                var value = (document.getElementById(_id).checked) ? 'true' : 'false';
+                for (var row of rows) {
+                    row.setAttribute(data_type, value);
+                    changeVisibility(row);
+                }
+            }
+
+            function changeAllCheckboxes(className, bool_value) {
+                var checkboxes = document.getElementsByName(className);
+
+                for (var checkbox of checkboxes) {
+                    checkbox.checked = bool_value;
+                }
+                var rows = document.getElementById('tbody-lecture').getElementsByTagName('tr');
+
+                var data_value = (bool_value) ? 'true' : 'false';
+                var data_type = 'data-' + className;
+                for (var row of rows) {
+                    row.setAttribute(data_type, data_value);
+                    changeVisibility(row);
+                }
+            }
+        </script>
+
+{% endblock %}

@@ -12,7 +12,7 @@
                     <h3>検索</h3>
                 </div>
                 <div class="p-3">
-                    <form action="/abc" method="GET">
+                    <form action="/result" method="GET">
                         <div class="form-group">
                             <!-- <label for="">授業名</label> -->
                             <input type="lecture" class="form-control" name="lectureName">
@@ -42,7 +42,7 @@
                             <tr>
                                 <td> {{ item.quarter }} </td>
                                 <!-- <td> {{ item.lecname }} </td> -->
-                                <td> <a href="{% url 'app:lecture' %}?lecname={{item.lecname}}"> {{item.lecname}}</a></td>
+                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}"> {{item.lecname}}</a></td>
                                 <td> {{ item.teacher }} </td>
                             </tr>
                             {% endfor %}

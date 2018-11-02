@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
 import pymysql
+import ast
+
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                             user='root',
-                             password='',
-                             db='test_ocw',
-                             charset='utf8',
-                             # Selectの結果をdictionary形式で受け取る
-                             cursorclass=pymysql.cursors.DictCursor)
+                                 user='chakku',
+                                 password='chakku',
+                                 # db='test',
+                                 db='test_ocw',
+                                 charset='utf8',
+                                 # Selectの結果をdictionary形式で受け取る
+                                 cursorclass=pymysql.cursors.DictCursor)
 
 # Create your views here.
 def test_response(request):
@@ -30,19 +33,20 @@ def search_and_result(request):
     # リクエストに応じてDBから情報を取得
     # TODO
 
-    content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
+    #content = [('1Q', '講義名1', '教員名3','lecture'), ('2Q', '講義名2', '教員名2','lecture'), ('1Q', '講義名3', '教員名3','lecture')]
+    content = []
     result_content = []
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT Quater,LectureName,Professor FROM lecture WHERE LectureName like '%{}%'".format(lecname)
+        sql = "SELECT Quarter,LectureName,Professor,LectureCode FROM lecture WHERE LectureName like '%{}%'".format(lecname)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
         for row in dbdata:
-            content.append((row["Quater"],row["LectureName"],row["Professor"]))
+            content.append((row["Quarter"],row["LectureName"],row["Professor"],row["LectureCode"]))
 
     for item in content:
-        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] })
+        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] , 'code': item[3]})
 
     d = {
         'result_head': result_head,
@@ -54,22 +58,28 @@ def search_and_result(request):
 
 def lecture(request):
     # クエリから得られる情報
-    lecname = request.GET.get("lecname")    # 講義名
+    code = request.GET.get("code")    # 講義名
 
     # 情報からのデータ構築
     d = {}
     with db_connect().cursor() as cursor:
-        sql = "SELECT * FROM lecture WHERE LectureName like '{}'".format(lecname)
+        sql = "SELECT * FROM lecture WHERE LectureCode like '{}'".format(code)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
         d = dbdata[0]
+
+    d["LecturePlan"] = [{"term":p[0],"plan":p[1],"task":p[2]} \
+        for p in ast.literal_eval(d["LecturePlan"].replace("\'","\\\'")
+                                                    .replace("\\\\'","\'")
+                                                    .replace("\r","\\r")
+                                                    .replace("\n","\\n"))]
 
     return render(request,'lecture.html',d)
 
 
 def department_page(request):
-    print(request)
     request_param = request.GET.get('dep')
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -87,12 +97,33 @@ def department_page(request):
         elif param == "sonota":
             return "その他"
 
-    department_name = param2name(request_param)
+    gakuin_name = param2name(request_param)
+
+    with db_connect().cursor() as cursor:
+        sql = "SELECT LectureName,Department,Professor,LectureCode,DateRoom FROM lecture WHERE Gakuin like '%s'" % gakuin_name
+        cursor.execute(sql)
+        dbdata = cursor.fetchall()
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"]) for row in dbdata)
+
+    result_content = list(
+            {
+                'lecname': item[0],
+                'opening_department': item[1],
+                'teacher': item[2],
+                'code': item[3],
+                'series': '%s00' % item[3][-3:-2:],
+                'dateroom': item[4]
+                } for item in content)
+    series_list = sorted({row['series'] for row in result_content})
+    opening_department_list = sorted({row['opening_department'] for row in result_content})
 
     d = {
-        'department_name' : department_name,
+        'result_head' : result_head,
+        'result_content' : result_content,
+        'series_list' : series_list,
+        'opening_department_list' : opening_department_list,
+        'gakuin_name' : gakuin_name,
         }
-    print(d)
     return render(request,'department.html',d)
 
 
