@@ -1,9 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{ gakuin_name }}
 {% endblock %}
 <!-- 学院ごとのページ -->
+
+{% block header %}
+<link href="{% static 'css/resultTable.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 
@@ -54,30 +59,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <!--     <th> {{ result_head.series }} </th> -->
-                                <th> {{ result_head.lecname }} </th>
-                                <!-- <th> {{ result_head.opening_department }} </th> -->
-                                <!-- <th> {{ result_head.teacher }} </th> -->
-                                <th> {{ result_head.quarter}} </th>
-                                <th> {{ result_head.dateroom }} </th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-lecture"> <!-- The attribute 'id' is used in changeAllCheckboxes. -->
-                            {% for item in result_content %}
-                            <tr class="{{ item.opening_department }} {{ item.series }}" style="" data-series="true" data-opening_department="true">
-                                <!-- <td> {{ item.series }} </td> -->
-                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
-                                <!-- <td> {{ item.opening_department }} </td> -->
-                                <!-- <td> {{ item.teacher }} </td> -->
-                                <td> {{ item.quarter}} </td>
-                                <td> {{ item.dateroom }} </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% include "resultTable.html" with result_head=result_head result_content=result_content %}
                 </div>
             </div>
         </div>

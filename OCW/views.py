@@ -5,12 +5,25 @@ import ast
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                                 user='chakku',
-                                 password='abcd',
+                                 user='test',
+                                 password='test',
                                  db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
                                  cursorclass=pymysql.cursors.DictCursor)
+
+# column names in database
+columns = [
+        'LectureCode',
+        'LectureName',
+        'Department',
+        'Professor',
+        'DateRoom',
+        'Quarter',
+        ]
+
+# テーブルヘッダ
+result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
 
 # Create your views here.
 def test_response(request):
@@ -21,9 +34,6 @@ def toppage(request):
     return render(request,'topPage.html',d)
 
 def search_and_result(request):
-    # テーブルヘッダ
-    result_head = {'quarter': 'クォーター', 'lecname': '講義名', 'teacher': '教員名'}
-
     # リクエストから取れる情報
     lecname = request.GET.get("lectureName")    # 講義名
 
@@ -37,20 +47,31 @@ def search_and_result(request):
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT Quarter,LectureName,Professor,LectureCode FROM lecture WHERE LectureName like '%{}%'".format(lecname)
+        sql = "SELECT {} FROM lecture WHERE LectureName like '%{}%'".format(','.join(columns), lecname)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
-        for row in dbdata:
-            content.append((row["Quarter"],row["LectureName"],row["Professor"],row["LectureCode"]))
 
-    for item in content:
-        result_content.append({'quarter': item[0], 'lecname': item[1], 'teacher': item[2] , 'code': item[3]})
+        content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
+
+    result_content = list(
+            {
+                'lecname': item[0],
+                'opening_department': item[1],
+                'teacher': item[2],
+                'code': item[3],
+                'series': '%s00' % item[3][-3:-2:],
+                'dateroom': item[4],
+				'quarter': item[5]
+                } for item in content)
+    series_list = sorted({row['series'] for row in result_content})
+    opening_department_list = sorted({row['opening_department'] for row in result_content})
 
     d = {
-        'result_head': result_head,
-        'result_content': result_content,
-        'lectureName' : lecname,
-    }
+        'result_head' : result_head,
+        'result_content' : result_content,
+        'series_list' : series_list,
+        'opening_department_list' : opening_department_list,
+        }
     return render(request, 'searchAndResult.html', d)
 
 
@@ -77,7 +98,6 @@ def lecture(request):
 
 def department_page(request):
     request_param = request.GET.get('dep')
-    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
 
     def param2name(param):
         if param == "rigakuin":
@@ -99,14 +119,16 @@ def department_page(request):
 
     with db_connect().cursor() as cursor:
 
+        columns_str = ",".join('lecture.%s' % column for column in columns)
         if gakuin_name=="その他":
-            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom,lecture.Quarter \
-                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin IN ('{}','{}')".format("教養科目群","類科目")
+            sql = "SELECT {} \
+                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin IN ('{}','{}')".format(columns_str, "教養科目群","類科目")
         else:
-            sql = "SELECT lecture.LectureName,lecture.Department,lecture.Professor,lecture.LectureCode,lecture.DateRoom,lecture.Quarter \
-                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '%s'" % gakuin_name
+            sql = "SELECT {} \
+                    FROM lecture JOIN LforG ON lecture.LectureCode = LforG.LectureCode WHERE LforG.Gakuin like '{}'".format(columns_str, gakuin_name)
         cursor.execute(sql)
         dbdata = cursor.fetchall()
+
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
 
     result_content = list(
