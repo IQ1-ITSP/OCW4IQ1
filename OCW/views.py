@@ -77,7 +77,7 @@ def lecture(request):
 
 def department_page(request):
     request_param = request.GET.get('dep')
-    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)'}
+    result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
 
     def param2name(param):
         if param == "rigakuin":
