@@ -1,8 +1,11 @@
 function changeVisibility(lecture_tuple) {
-    if (lecture_tuple.getAttribute('data-series') === 'true' && lecture_tuple.getAttribute('data-opening_department') === 'true')
-        lecture_tuple.setAttribute("style", '');
-    else
-        lecture_tuple.setAttribute("style", 'display: none;');
+    if (lecture_tuple.getAttribute('data-series') === 'true' && lecture_tuple.getAttribute('data-opening_department') === 'true') {
+        lecture_tuple.classList.add('d-flex');
+        lecture_tuple.classList.remove('d-none');
+    } else {
+        lecture_tuple.classList.add('d-none');
+        lecture_tuple.classList.remove('d-flex');
+    }
 }
 
 function checkboxListener(_id, data_type) {

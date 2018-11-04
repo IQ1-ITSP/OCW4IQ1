@@ -5,8 +5,8 @@ import ast
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                                 user='test',
-                                 password='test',
+                                 user='chakku',
+                                 password='chakku',
                                  db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
@@ -24,6 +24,14 @@ columns = [
 
 # テーブルヘッダ
 result_head = {'series': '番台', 'lecname': '講義名', 'opening_department': '開講元', 'teacher': '教員名' , 'dateroom':'曜日・時間(講義室)' , 'quarter' : 'Q'}
+
+# 教員名を整形する
+def shape_teacher_list(teachers_str, n = 2): # n: 教員0,...,教員n-1 他
+    l = teachers_str.split(', ', maxsplit=n + 1)
+    if len(l) > n:
+        return ', '.join(l[:n]) + ' ほか'
+    return ', '.join(l)
+
 
 # Create your views here.
 def test_response(request):
@@ -57,7 +65,7 @@ def search_and_result(request):
             {
                 'lecname': item[0],
                 'opening_department': item[1],
-                'teacher': item[2],
+                'teacher': shape_teacher_list(item[2]),
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
                 'dateroom': item[4],
@@ -135,7 +143,7 @@ def department_page(request):
             {
                 'lecname': item[0],
                 'opening_department': item[1],
-                'teacher': item[2],
+                'teacher': shape_teacher_list(item[2]),
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
                 'dateroom': item[4],
