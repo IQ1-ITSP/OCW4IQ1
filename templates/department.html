@@ -26,7 +26,7 @@
                                 {% for item in opening_department_list %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" name="opening_department" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-opening_department')">
-                                    <label class="form-check-label"> {{ item }} </label>
+                                    <label class="form-check-label" for="{{ item }}"> {{ item }} </label>
                                 </div>
                                 {% endfor %}
                             </div>
