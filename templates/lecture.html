@@ -11,14 +11,28 @@
                 <div class="p-3 pt-5">
                     <h3> {{LectureName}} </h3>
                 </div>
-                <div class="p-3 pt-3">
-                    <h6> 科目コード : {{LectureCode}}</h6>
-                    <h6> 開講クォーター : {{Quarter}}</h6>
-                    <h6> 教員名 : {{Professor}} </h6>
-                    <h6> 開講元 : {{Department}} </h6>
-                    <h6> 曜日・時限(講義室) : {{DateRoom}}</h6>
-                    <h6> 単位数 : {{Credit}}</h6>
-                    <h6> 言語 : {{Language}}</h6>
+
+                <div class="pt-1 pb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-5">科目コード</dt>
+                                <dd class="col-7">{{ LectureCode }}</dd>
+                                <dt class="col-5">開講Q</dt>
+                                <dd class="col-7">{{ Quarter }}</dd>
+                                <dt class="col-5">時間・場所</dt>
+                                <dd class="col-7">{{ DateRoom }}</dd>
+                                <dt class="col-5">開講元</dt>
+                                <dd class="col-7">{{ Department }}</dd>
+                                <dt class="col-5">教員名</dt>
+                                <dd class="col-7">{{ Professor }}</dd>
+                                <dt class="col-5">単位数</dt>
+                                <dd class="col-7">{{ Credit }}</dd>
+                                <dt class="col-5">言語</dt>
+                                <dd class="col-7">{{ Language }}</dd>
+                            </dl>
+                        </dl>
+                    </div>
                 </div>
 
                 <div class="p-3 pt-5">
