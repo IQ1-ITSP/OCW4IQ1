@@ -46,7 +46,7 @@
                                 {% for item in series_list %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" name="series" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-series')">
-                                    <label class="form-check-label"> {{ item }} </label>
+                                    <label class="form-check-label" for="{{ item }}"> {{ item }} </label>
                                 </div>
                                 {% endfor %}
                             </div>
