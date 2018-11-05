@@ -1,4 +1,7 @@
 @media only screen and (max-width: 575px) {
+    .color-sm {
+        background-color: #DDDDDD
+    }
     td {
         display: block;
         text-align: left;
