@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{ LectureName }} 詳細情報
+{% endblock %}
+
+{% block header %}
+<link href="{% static 'css/lecture.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -16,22 +21,22 @@
                     <div class="card">
                         <div class="card-body">
                             <dl class="row">
-                                <dt class="col-5">科目コード</dt>
-                                <dd class="col-7">{{ LectureCode }}</dd>
-                                <dt class="col-5">開講Q</dt>
-                                <dd class="col-7">{{ Quarter }}</dd>
-                                <dt class="col-5">時間・場所</dt>
-                                <dd class="col-7">{{ DateRoom }}</dd>
-                                <dt class="col-5">開講元</dt>
-                                <dd class="col-7">{{ Department }}</dd>
-                                <dt class="col-5">教員名</dt>
-                                <dd class="col-7">{{ Professor }}</dd>
-                                <dt class="col-5">単位数</dt>
-                                <dd class="col-7">{{ Credit }}</dd>
-                                <dt class="col-5">言語</dt>
-                                <dd class="col-7">{{ Language }}</dd>
+                                <dt class="col-4">科目コード</dt>
+                                <dd class="col-8">{{ LectureCode }}</dd>
+                                <dt class="col-4">開講Q</dt>
+                                <dd class="col-8">{{ Quarter }}</dd>
+                                <dt class="col-4">時間・場所</dt>
+                                <dd class="col-8">{{ DateRoom }}</dd>
+                                <dt class="col-4">開講元</dt>
+                                <dd class="col-8">{{ Department }}</dd>
+                                <dt class="col-4">教員名</dt>
+                                <dd class="col-8">{{ Professor }}</dd>
+                                <dt class="col-4">単位数</dt>
+                                <dd class="col-8">{{ Credit }}</dd>
+                                <dt class="col-4">言語</dt>
+                                <dd class="col-8">{{ Language }}</dd>
                             </dl>
-                        </dl>
+                        </div>
                     </div>
                 </div>
 
