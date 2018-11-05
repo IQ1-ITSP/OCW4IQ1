@@ -1,6 +1,6 @@
 
 <table class="table">
-    <thead class="thead-dark">
+    <thead class="thead-dark d-none d-sm-block">
         <tr class='d-sm-flex'>
             <th class='col-sm-5 col-lg-3'> {{ result_head.lecname }} </th>
             <th class='col-sm-1 col-lg-1'> {{ result_head.quarter}} </th>
@@ -13,9 +13,9 @@
     <tbody id="tbody-lecture"> <!-- The attribute 'id' is used in changeAllCheckboxes. -->
         {% for item in result_content %}
         <tr class="d-sm-flex {{ item.opening_department }} {{ item.series }}" data-series="true" data-opening_department="true">
-            <td class='col-sm-5 col-lg-3'> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
-            <td class='col-sm-1 col-lg-1'> {{ item.quarter}} </td>
-            <td class='col-sm-5 col-lg-3'> {{ item.dateroom }} </td>
+            <td class='col-sm-5 col-lg-3 color-sm'> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
+            <td class='col-sm-1 col-lg-1 padding-top-sm-sm padding-bottom-sm-sm'><p class='d-inline d-sm-none'>&#9658;</p> {{ item.quarter}} </td>
+            <td class='col-sm-5 col-lg-3 padding-top-sm-sm'><p class='d-inline d-sm-none'>&#9658;</p> {{ item.dateroom }} </td>
             <td class='d-none d-sm-block col-sm-1 col-lg-1'> {{ item.series }} </td>
             <td class='d-none d-sm-none d-md-none d-lg-block col-lg-2'> {{ item.opening_department }} </td>
             <td class='d-none d-sm-none d-md-none d-lg-block col-lg-2'> {{ item.teacher }} </td>

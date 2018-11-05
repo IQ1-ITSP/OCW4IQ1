@@ -32,6 +32,9 @@ def shape_teacher_list(teachers_str, n = 2): # n: 教員0,...,教員n-1 他
         return ', '.join(l[:n]) + ' ほか'
     return ', '.join(l)
 
+# 曜日・場所を整形する
+def shape_dateroom(dateroom):
+    return dateroom.replace('\xa0\xa0', ' ')
 
 # Create your views here.
 def test_response(request):
@@ -69,7 +72,7 @@ def search_and_result(request):
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
                 'dateroom': item[4],
-				'quarter': item[5]
+                'quarter': item[5]
                 } for item in content)
     series_list = sorted({row['series'] for row in result_content})
     opening_department_list = sorted({row['opening_department'] for row in result_content})
@@ -147,7 +150,7 @@ def department_page(request):
                 'code': item[3],
                 'series': '%s00' % item[3][-3:-2:],
                 'dateroom': item[4],
-				'quarter': item[5]
+                'quarter': item[5]
                 } for item in content)
     series_list = sorted({row['series'] for row in result_content})
     opening_department_list = sorted({row['opening_department'] for row in result_content})
