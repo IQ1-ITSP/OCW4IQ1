@@ -165,6 +165,8 @@ def department_page(request):
         }
     return render(request,'department.html',d)
 
+def manifest(request):
+    return render(request, 'maniefst.json')
 
 def base_layout(request):
     print('BASE LAYOUT')
