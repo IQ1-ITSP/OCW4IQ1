@@ -12,19 +12,39 @@
                     <h3> {{LectureName}} </h3>
                 </div>
                 <div class="p-3 pt-3">
-                    <h6> 開講クォーター : {{Quater}}</h6>
+                    <h6> 科目コード : {{LectureCode}}</h6>
+                    <h6> 開講クォーター : {{Quarter}}</h6>
                     <h6> 教員名 : {{Professor}} </h6>
-                    <h6> 開講元 : {{Course}} </h6>
-                    <h6> 開講時間 : {{DateRoom}}</h6>
-                    <h6> 講義室 : {{DateRoom}}</h6>
-                    <h6> 単位数 : {{TANI}}</h6>
+                    <h6> 開講元 : {{Department}} </h6>
+                    <h6> 曜日・時限(講義室) : {{DateRoom}}</h6>
+                    <h6> 単位数 : {{Credit}}</h6>
                     <h6> 言語 : {{Language}}</h6>
                 </div>
 
                 <div class="p-3 pt-5">
                     <h5> 授業詳細 </h5>
-                     評価方法：{{HyoukaStyle}}<br>
-                     履修条件：{{RisyuJoken}}
+                     <h6>評価方法：</h6>
+                     {{AssessStyle}}<br>
+                     <h6>履修条件：</h6>
+                     {{CourseCond}}<br>
+                     <table class="table">
+                         <thead class="thead-dark">
+                             <tr>
+                                 <th> 　　　　 </th>
+                                 <th> 授業計画 </th>
+                                 <th> 課題 </th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             {% for item in LecturePlan %}
+                             <tr>
+                                 <td> {{ item.term }} </td>
+                                 <td> {{ item.plan | linebreaksbr }} </td>
+                                 <td> {{ item.task }} </td>
+                             </tr>
+                             {% endfor %}
+                         </tbody>
+                     </table>
                     <!--
                       ここに授業の内容とか....についての詳しい情報を...
                     -->
