@@ -1,9 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{ gakuin_name }}
 {% endblock %}
 <!-- 学院ごとのページ -->
+
+{% block header %}
+<link href="{% static 'css/resultTable.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 
@@ -21,7 +26,7 @@
                                 {% for item in opening_department_list %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" name="opening_department" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-opening_department')">
-                                    <label class="form-check-label"> {{ item }} </label>
+                                    <label class="form-check-label" for="{{ item }}"> {{ item }} </label>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -41,7 +46,7 @@
                                 {% for item in series_list %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" name="series" type="checkbox" id="{{ item }}" checked="checked" onchange="checkboxListener(id, 'data-series')">
-                                    <label class="form-check-label"> {{ item }} </label>
+                                    <label class="form-check-label" for="{{ item }}"> {{ item }} </label>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -53,67 +58,11 @@
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <!--     <th> {{ result_head.series }} </th> -->
-                                <th> {{ result_head.lecname }} </th>
-                                <!-- <th> {{ result_head.opening_department }} </th> -->
-                                <!-- <th> {{ result_head.teacher }} </th> -->
-                                <th> {{ result_head.quarter}} </th>
-                                <th> {{ result_head.dateroom }} </th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-lecture"> <!-- The attribute 'id' is used in changeAllCheckboxes. -->
-                            {% for item in result_content %}
-                            <tr class="{{ item.opening_department }} {{ item.series }}" style="" data-series="true" data-opening_department="true">
-                                <!-- <td> {{ item.series }} </td> -->
-                                <td> <a href="{% url 'app:lecture' %}?code={{item.code}}">{{item.lecname}}</a></td>
-                                <!-- <td> {{ item.opening_department }} </td> -->
-                                <!-- <td> {{ item.teacher }} </td> -->
-                                <td> {{ item.quarter}} </td>
-                                <td> {{ item.dateroom }} </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                 <div class="table-responsive">
+                    {% include "resultTable.html" with result_head=result_head result_content=result_content %}
+                 </div>
             </div>
         </div>
-        <script>
-            function changeVisibility(lecture_tuple) {
-                if (lecture_tuple.getAttribute('data-series') === 'true' && lecture_tuple.getAttribute('data-opening_department') === 'true')
-                    lecture_tuple.setAttribute("style", '');
-                else
-                    lecture_tuple.setAttribute("style", 'display: none;');
-            }
-
-            function checkboxListener(_id, data_type) {
-                var rows = document.getElementsByClassName(_id);
-
-                var value = (document.getElementById(_id).checked) ? 'true' : 'false';
-                for (var row of rows) {
-                    row.setAttribute(data_type, value);
-                    changeVisibility(row);
-                }
-            }
-
-            function changeAllCheckboxes(className, bool_value) {
-                var checkboxes = document.getElementsByName(className);
-
-                for (var checkbox of checkboxes) {
-                    checkbox.checked = bool_value;
-                }
-                var rows = document.getElementById('tbody-lecture').getElementsByTagName('tr');
-
-                var data_value = (bool_value) ? 'true' : 'false';
-                var data_type = 'data-' + className;
-                for (var row of rows) {
-                    row.setAttribute(data_type, data_value);
-                    changeVisibility(row);
-                }
-            }
-        </script>
+        <script src="{% static 'js/department.js' %}"></script>
 
 {% endblock %}

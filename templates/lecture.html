@@ -1,32 +1,59 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{ LectureName }} 詳細情報
+{% endblock %}
+
+{% block header %}
+<link href="{% static 'css/lecture.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 
         <div class="container">
             <div class="pt-5 pb-5">
-                <div class="p-3 pt-5">
+                <div class="pt-5 pb-2">
                     <h3> {{LectureName}} </h3>
                 </div>
-                <div class="p-3 pt-3">
-                    <h6> 科目コード : {{LectureCode}}</h6>
-                    <h6> 開講クォーター : {{Quarter}}</h6>
-                    <h6> 教員名 : {{Professor}} </h6>
-                    <h6> 開講元 : {{Department}} </h6>
-                    <h6> 曜日・時限(講義室) : {{DateRoom}}</h6>
-                    <h6> 単位数 : {{Credit}}</h6>
-                    <h6> 言語 : {{Language}}</h6>
+
+                <div class="pt-1 pb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-4">科目コード</dt>
+                                <dd class="col-8">{{ LectureCode }}</dd>
+                                <dt class="col-4">開講Q</dt>
+                                <dd class="col-8">{{ Quarter }}</dd>
+                                <dt class="col-4">時間・場所</dt>
+                                <dd class="col-8">{{ DateRoom }}</dd>
+                                <dt class="col-4">開講元</dt>
+                                <dd class="col-8">{{ Department }}</dd>
+                                <dt class="col-4">教員名</dt>
+                                <dd class="col-8">{{ Professor }}</dd>
+                                <dt class="col-4">単位数</dt>
+                                <dd class="col-8">{{ Credit }}</dd>
+                                <dt class="col-4">言語</dt>
+                                <dd class="col-8">{{ Language }}</dd>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="p-3 pt-5">
-                    <h5> 授業詳細 </h5>
-                     <h6>評価方法：</h6>
-                     {{AssessStyle}}<br>
-                     <h6>履修条件：</h6>
-                     {{CourseCond}}<br>
+                <div class="pt-1 pb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            授業詳細
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-12">評価方法</dt>
+                                <dd class="col-12">{{ AssessStyle }}</dd>
+                                <dt class="col-12">履修条件</dt>
+                                <dd class="col-12">{{ CourseCond }}</dd>
+                            </dl>
+                        </div>
+
                      <table class="table">
                          <thead class="thead-dark">
                              <tr>
@@ -49,6 +76,7 @@
                       ここに授業の内容とか....についての詳しい情報を...
                     -->
 
+                    </div>
                 </div>
             </div>
         </div>
