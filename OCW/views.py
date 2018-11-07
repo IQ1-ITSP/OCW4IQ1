@@ -171,3 +171,7 @@ def manifest(request):
 def base_layout(request):
     print('BASE LAYOUT')
     return render(request,'base.html')
+
+def test(request):
+    print("TEST")
+    return render(request, 'test.html')
