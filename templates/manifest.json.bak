@@ -1,0 +1,17 @@
+{% load static %}
+{
+    "name" : "IQ1OCW",
+    "short_name" : "OCW Light",
+    "description" : "light ocw",
+    "background_color": "#2196f3",
+    "start_url" : "http://localhost:8000",
+    "display" : "standalone",
+    "orientation" : "any",
+    "icons" : [
+        {
+            "src" : "/static/image/logo144.png",
+            "sizes" : "any 144x144",
+            "type" : "image/png"
+        }
+    ]
+}
