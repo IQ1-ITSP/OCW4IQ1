@@ -1,3 +1,4 @@
+{% load static %}
 {
     "name": "IQ1OCW",
     "theme_color": "#01090f",
@@ -22,7 +23,8 @@
             "type": "image/png"
         },
         {
-            "src": "static/icons/icon-144x144.png",
+            "src": "icons/icon-144x144.png",
+            "src": "{% static 'icons/icon-144x144.png' %}",
             "sizes": "144x144",
             "type": "image/png"
         },
