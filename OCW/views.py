@@ -83,6 +83,7 @@ def search_and_result(request):
         'result_content' : result_content,
         'series_list' : series_list,
         'opening_department_list' : opening_department_list,
+        'lectureName' : lecname,
         }
     return render(request, 'searchAndResult.html', d)
 
