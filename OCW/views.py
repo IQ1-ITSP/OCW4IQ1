@@ -165,3 +165,14 @@ def department_page(request):
         'gakuin_name' : gakuin_name,
         }
     return render(request,'department.html',d)
+
+def manifest(request):
+    return render(request, 'maniefst.json')
+
+def base_layout(request):
+    print('BASE LAYOUT')
+    return render(request,'base.html')
+
+def test(request):
+    print("TEST")
+    return render(request, 'test.html')

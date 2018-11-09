@@ -1,0 +1,1 @@
+django-progressive-web-app
