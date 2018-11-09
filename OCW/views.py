@@ -4,10 +4,10 @@ import pymysql
 import ast
 
 def db_connect():
-    return pymysql.connect(host='localhost',  # host='localhost',
+    return pymysql.connect(host='localhost',
                            user='chakku',
                            password='chakku',
-                           db='test_ocw',
+                           db='test',
                            charset='utf8',
                            # Selectの結果をdictionary形式で受け取る
                            cursorclass=pymysql.cursors.DictCursor)
