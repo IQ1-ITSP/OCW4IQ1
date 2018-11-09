@@ -4,13 +4,13 @@ import pymysql
 import ast
 
 def db_connect():
-    return pymysql.connect(host='localhost',
-                                 user='chakku',
-                                 password='chakku',
-                                 db='test',
-                                 charset='utf8',
-                                 # Selectの結果をdictionary形式で受け取る
-                                 cursorclass=pymysql.cursors.DictCursor)
+    return pymysql.connect(host='localhost',  # host='localhost',
+                           user='chakku',
+                           password='chakku',
+                           db='test_ocw',
+                           charset='utf8',
+                           # Selectの結果をdictionary形式で受け取る
+                           cursorclass=pymysql.cursors.DictCursor)
 
 # column names in database
 columns = [
