@@ -24,7 +24,7 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'OCW/static/js', 'serviceworker
 SECRET_KEY = 'bzvd3j8gz694w63!!^_1%0*q#3y)6x+ij&+bla(jn#$wwbqq=x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
