@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8" name="viewport" >
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>IQ1でもわかるOCW</title>
-        <!-- BootStrap4 -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+{% extends "base.html" %}
+
+{% block title %}
+IQ1でもわかるOCW
+{% endblock %}
+
+{% block body %}
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
             <!-- navbar-dark : 文字色白 , bg-dark : 背景黒 -->
-            <a class="navbar-brand" href="#">IQ1でもわかるOCW</a>
+            <a class="navbar-brand" href="/">IQ1でもわかるOCW</a>
             <!-- TODO 必要ならばトグルメニューを追加 -->
         </nav>
 
@@ -23,7 +18,7 @@
                     <h3>授業名で検索</h3>
                 </div>
                 <div class="p-3">
-                    <form action="/abc" method="GET">
+                    <form action="/result" method="GET">
                         <div class="form-group">
                             <label for="">授業名</label>
                             <input type="lecture" class="form-control" name="lectureName">
@@ -44,29 +39,29 @@
                 <div class="p-3">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=rigakuin"> 理学院 </a>
+                            <a href="/department?dep=rigakuin"> 理学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=kougakuin"> 工学院 </a>
+                            <a href="/department?dep=kougakuin"> 工学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=bussitsu"> 物質理工学院 </a>
+                            <a href="/department?dep=bussitsu"> 物質理工学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=jouhou"> 情報理工学院 </a>
+                            <a href="/department?dep=jouhou"> 情報理工学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=seimei"> 生命理工学院 </a>
+                            <a href="/department?dep=seimei"> 生命理工学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=kankyo"> 環境・社会理工学院 </a>
+                            <a href="/department?dep=kankyo"> 環境・社会理工学院 </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="http://localhost:8000/department?dep=sonota"> その他 </a>
+                            <a href="/department?dep=sonota"> その他 </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+
+{% endblock %}

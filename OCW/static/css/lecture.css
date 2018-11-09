@@ -1,0 +1,10 @@
+/* bootstrap card ***************************************************/
+
+.card-body dl {
+    margin-bottom: 0;
+}
+
+.card-body dt {
+    padding-right: 0;
+}
+

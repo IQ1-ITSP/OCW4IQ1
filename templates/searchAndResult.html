@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" name="viewport">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <title>検索結果</title>
-        <!-- BootStrap4 -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <!-- ナビゲーションバー -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ lectureName }} 検索結果
+{% endblock %}
+
+{% block header %}
+<link href="{% static 'css/resultTable.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
             <!-- navbar-dark : 文字色白 , bg-dark : 背景黒 -->
-            <a class="navbar-brand" href="#">IQ1でもわかるOCW</a>
+            <a class="navbar-brand" href="/">IQ1でもわかるOCW</a>
             <!-- TODO 必要ならばトグルメニューを追加 -->
         </nav>
 
@@ -24,7 +23,7 @@
                     <h3>検索</h3>
                 </div>
                 <div class="p-3">
-                    <form action="/abc" method="GET">
+                    <form action="/result" method="GET">
                         <div class="form-group">
                             <!-- <label for="">授業名</label> -->
                             <input type="lecture" class="form-control" name="lectureName">
@@ -38,31 +37,12 @@
         <div class="container">
             <div class="pt-5 pb-5">
                 <div class="p-3 pt-5">
-                    <h2>検索結果</h2>
                     <h2> {{lectureName}} 検索結果</h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th> {{ result_head.quarter }} </th>
-                                <th> {{ result_head.lecname }} </th>
-                                <th> {{ result_head.teacher }} </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in result_content %}
-                            <tr>
-                                <td> {{ item.quarter }} </td>
-                                <!-- <td> {{ item.lecname }} </td> -->
-                                <td> <a href="{% url 'app:lecture' %}?lecname={{item.lecname}}"> {{item.lecname}}</a></td>
-                                <td> {{ item.teacher }} </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% include "resultTable.html" with result_head=result_head result_content=result_content %}
                 </div>
             </div>
         </div>
-    </body>
-</html>
+
+{% endblock %}
