@@ -6,7 +6,25 @@
 {% endblock %}
 
 {% block header %}
-<link href="{% static 'css/resultTable.css' %}" rel="stylesheet">
+<style>
+@media only screen and (max-width: 575px) {
+    .color-sm {
+        background-color: #EEEEEE;
+    }
+    .padding-bottom-sm-sm {
+        padding-bottom: 5px!important;
+    }
+    .padding-top-sm-sm {
+        padding-top: 5px!important;
+    }
+    td {
+        display: block;
+        text-align: left;
+        width: 100%;
+        border-style: none!important;
+    }
+}
+</style>
 {% endblock %}
 
 {% block body %}
