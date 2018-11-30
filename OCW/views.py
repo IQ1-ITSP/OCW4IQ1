@@ -5,9 +5,9 @@ import ast
 
 def db_connect():
     return pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='',
-                                 db='test_ocw',
+                                 user='chakku',
+                                 password='chakku',
+                                 db='test',
                                  charset='utf8',
                                  # Selectの結果をdictionary形式で受け取る
                                  cursorclass=pymysql.cursors.DictCursor)
@@ -47,7 +47,19 @@ def toppage(request):
 
 def search_and_result(request):
     # リクエストから取れる情報
-    lecname = request.GET.get("lectureName")    # 講義名
+    lecname = request.GET.get("lectureName").replace('%', '')    # 講義名
+    print(lecname)
+
+    if not lecname:
+        d = {
+            'result_head' : result_head,
+            'result_content' : [],
+            'series_list' : [],
+            'opening_department_list' : [],
+            'lectureName' : '',
+            }
+        return render(request, 'searchAndResult.html', d)
+
 
 
     # リクエストに応じてDBから情報を取得
