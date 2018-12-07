@@ -193,3 +193,6 @@ def base_layout(request):
 def test(request):
     print("TEST")
     return render(request, 'test.html')
+
+def cache_not_found(request):
+    return render(request, 'cacheNotFound.html')
