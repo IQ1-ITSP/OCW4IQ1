@@ -7,7 +7,25 @@
 <!-- 学院ごとのページ -->
 
 {% block header %}
-<link href="{% static 'css/resultTable.css' %}" rel="stylesheet">
+<style>
+@media only screen and (max-width: 575px) {
+    .color-sm {
+        background-color: #EEEEEE;
+    }
+    .padding-bottom-sm-sm {
+        padding-bottom: 5px!important;
+    }
+    .padding-top-sm-sm {
+        padding-top: 5px!important;
+    }
+    td {
+        display: block;
+        text-align: left;
+        width: 100%;
+        border-style: none!important;
+    }
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -69,6 +87,42 @@
                  </div>
             </div>
         </div>
-        <script src="{% static 'js/department.js' %}"></script>
+        <script>
+            function changeVisibility(lecture_tuple) {
+                if (lecture_tuple.getAttribute('data-series') === 'true' && lecture_tuple.getAttribute('data-opening_department') === 'true') {
+                    lecture_tuple.classList.add('d-sm-flex');
+                    lecture_tuple.classList.remove('d-none');
+                } else {
+                    lecture_tuple.classList.add('d-none');
+                    lecture_tuple.classList.remove('d-sm-flex');
+                }
+            }
+
+            function checkboxListener(_id, data_type) {
+                var rows = document.getElementsByClassName(_id);
+
+                var value = (document.getElementById(_id).checked) ? 'true' : 'false';
+                for (var row of rows) {
+                    row.setAttribute(data_type, value);
+                    changeVisibility(row);
+                }
+            }
+
+            function changeAllCheckboxes(className, bool_value) {
+                var checkboxes = document.getElementsByName(className);
+
+                for (var checkbox of checkboxes) {
+                    checkbox.checked = bool_value;
+                }
+                var rows = document.getElementById('tbody-lecture').getElementsByTagName('tr');
+
+                var data_value = (bool_value) ? 'true' : 'false';
+                var data_type = 'data-' + className;
+                for (var row of rows) {
+                    row.setAttribute(data_type, data_value);
+                    changeVisibility(row);
+                }
+            }
+        </script>
 
 {% endblock %}

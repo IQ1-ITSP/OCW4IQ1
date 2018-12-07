@@ -47,7 +47,19 @@ def toppage(request):
 
 def search_and_result(request):
     # リクエストから取れる情報
-    lecname = request.GET.get("lectureName")    # 講義名
+    lecname = request.GET.get("lectureName").replace('%', '')    # 講義名
+    print(lecname)
+
+    if not lecname:
+        d = {
+            'result_head' : result_head,
+            'result_content' : [],
+            'series_list' : [],
+            'opening_department_list' : [],
+            'lectureName' : '',
+            }
+        return render(request, 'searchAndResult.html', d)
+
 
 
     # リクエストに応じてDBから情報を取得
@@ -59,8 +71,8 @@ def search_and_result(request):
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT {} FROM lecture WHERE LectureName like '%{}%'".format(','.join(columns), lecname)
-        cursor.execute(sql)
+        sql = "SELECT {} FROM lecture WHERE LectureName like %s".format(','.join(columns))
+        cursor.execute(sql,("%{}%".format(lecname),))
         dbdata = cursor.fetchall()
 
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
@@ -92,19 +104,23 @@ def lecture(request):
     # クエリから得られる情報
     code = request.GET.get("code")    # 講義名
 
-    # 情報からのデータ構築
-    d = {}
-    with db_connect().cursor() as cursor:
-        sql = "SELECT * FROM lecture WHERE LectureCode like '{}'".format(code)
-        cursor.execute(sql)
-        dbdata = cursor.fetchall()
-        d = dbdata[0]
 
-    d["LecturePlan"] = [{"term":p[0],"plan":p[1],"task":p[2]} \
-        for p in ast.literal_eval(d["LecturePlan"].replace("\'","\\\'")
-                                                    .replace("\\\\'","\'")
-                                                    .replace("\r","\\r")
-                                                    .replace("\n","\\n"))]
+    with db_connect().cursor() as cursor:
+        # 情報からのデータ構築
+        sql = "SHOW COLUMNS FROM lecture"
+        cursor.execute(sql)
+        d = {col["Field"]:"" for col in cursor.fetchall()}
+
+        sql = "SELECT * FROM lecture WHERE LectureCode like %s"
+        cursor.execute(sql,(code,))
+        dbdata = cursor.fetchall()
+        if dbdata:
+            d = dbdata[0]
+            d["LecturePlan"] = [{"term":p[0],"plan":p[1],"task":p[2]} \
+                for p in ast.literal_eval(d["LecturePlan"].replace("\'","\\\'")
+                                                            .replace("\\\\'","\'")
+                                                            .replace("\r","\\r")
+                                                            .replace("\n","\\n"))]
 
     return render(request,'lecture.html',d)
 
@@ -127,6 +143,7 @@ def department_page(request):
             return "環境・社会理工学院"
         elif param == "sonota":
             return "その他"
+        return ""
 
     gakuin_name = param2name(request_param)
 
