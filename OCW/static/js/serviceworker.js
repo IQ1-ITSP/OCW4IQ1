@@ -1,60 +1,59 @@
 var staticCacheName = 'iq1-ocw-cache-v1';
 
 self.addEventListener('install', function (event) {
-    console.log("INSTALL EVENT", event);  // event.currentTarget.registration.scope
+    // console.log("INSTALL EVENT", event);  // event.currentTarget.registration.scope
     event.waitUntil(
         caches.open(staticCacheName).then(function (cache) {
             return cache.addAll([
                 //'/base_layout'
                 '/',
-                '/lecture/?code=PHY.Q206'
             ]);
         })
     );
 });
 
 self.addEventListener('fetch', function (event) {
-    //console.log("FETCH EVENT", event);
+    // GETメソッド以外は無視
+    if (event.request.method !== 'GET') return;
+
     var requestUrl = new URL(event.request.url);
-    //console.log("REQUESTURL.ORIGIN", requestUrl.origin);
+    // console.log("requestUrl", requestUrl);
+
+    let url = event.request.url;
+    // console.log("EVENT.REQUEST.URL", event.request.url);
 
     var referrer = event.request.referrer
-    console.log("EVENT.REQUEST", referrer);
-    var reff_start = referrer.indexOf('/lecture');
-    if (reff_start === -1) {
-        reff_start = referrer.indexOf('/result');
-    }
-    if (reff_start === -1) {
-        reff_start = referrer.indexOf('/department');
-    }
-    if (reff_start > -1) {
-        var req_path = referrer.slice(reff_start);
-        console.log("REQ_PATH", req_path);
-        caches.open(staticCacheName).then(function (cache) {
-            return cache.addAll([
-                req_path
-            ]);
-        })
-    }
-    //console.log("REQUESTURL.PATHNAME", requestUrl.pathname);
+    // console.log("EVENT.REQUEST.REFERRER", referrer);
+
     if (requestUrl.origin === location.origin) {
         if ((requestUrl.pathname === '/')) {
             //event.respondWith(caches.match('/base_layout'));
             event.respondWith(caches.match('/'));
             return;
-        }/*
-        else if (requestUrl.pathname.indexOf('/lecture') === 0) {
-            console.log("LECTURE", requestUrl.pathname);
-            caches.open(staticCacheName).then(function (cache) {
-                return cache.addAll([
-                    requestUrl.pathname
-                ]);
-            })
-        }*/
+        }
     }
+
     event.respondWith(
-        caches.match(event.request).then(function (response) {
-            return response || fetch(event.request);
-        })
+
+        caches.open(staticCacheName)
+          .then(cache =>{
+
+            return cache.match(event.request)
+              .then(response => {
+
+                // キャッシュファイルがある
+                if (response) {
+                  console.log('CACHE FETCH:', url);
+                  return response;
+                }
+                // キャッシュファイルがない
+                return fetch(event.request)
+                  .then(newreq => {
+                    console.log('NETWORK FETCH:', url);
+                    if (newreq.ok) cache.put(event.request, newreq.clone());
+                    return newreq;
+                  });
+              });
+          })
     );
 });
