@@ -71,8 +71,9 @@ def search_and_result(request):
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT {} FROM lecture WHERE LectureName like %s".format(','.join(columns))
-        cursor.execute(sql,("%{}%".format(lecname),))
+        sql = "SELECT {} FROM lecture WHERE LectureName like %s OR Professor like %s".format(','.join(columns))
+        print(sql)
+        cursor.execute(sql,("%{}%".format(lecname), "%{}%".format(lecname)))
         dbdata = cursor.fetchall()
 
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
