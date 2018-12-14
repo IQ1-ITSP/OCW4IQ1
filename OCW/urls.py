@@ -9,5 +9,6 @@ urlpatterns = [
     path('result/', views.search_and_result),
     path('lecture/', views.lecture, name='lecture'),
     path('department/', views.department_page, name='department'),
-    path('manigest/', views.manifest)
+    path('manigest/', views.manifest),
+    path('notfound/', views.cache_not_found),
 ]

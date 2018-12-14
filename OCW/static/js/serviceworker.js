@@ -1,13 +1,15 @@
 var staticCacheName = 'iq1-ocw-cache-v1';
 
+var offlineUrl = '/notfound/';
+var installFiles = [
+  '/',
+].concat(offlineUrl);
+
 self.addEventListener('install', function (event) {
     // console.log("INSTALL EVENT", event);  // event.currentTarget.registration.scope
     event.waitUntil(
         caches.open(staticCacheName).then(function (cache) {
-            return cache.addAll([
-                //'/base_layout'
-                '/',
-            ]);
+            return cache.addAll(installFiles);
         })
     );
 });
@@ -52,6 +54,10 @@ self.addEventListener('fetch', function (event) {
                     console.log('NETWORK FETCH:', url);
                     if (newreq.ok) cache.put(event.request, newreq.clone());
                     return newreq;
+                  })
+                  // オフラインかつキャッシュファイルが無い
+                  .catch(() => {
+                    return caches.match(offlineUrl)
                   });
               });
           })
