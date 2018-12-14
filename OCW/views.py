@@ -47,16 +47,16 @@ def toppage(request):
 
 def search_and_result(request):
     # リクエストから取れる情報
-    lecname = request.GET.get("lectureName").replace('%', '')    # 講義名
-    print(lecname)
+    keyword = request.GET.get("keyWord").replace('%', '')    # 検索ワード
+    print(keyword)
 
-    if not lecname:
+    if not keyword:
         d = {
             'result_head' : result_head,
             'result_content' : [],
             'series_list' : [],
             'opening_department_list' : [],
-            'lectureName' : '',
+            'keyWord' : '',
             }
         return render(request, 'searchAndResult.html', d)
 
@@ -71,8 +71,8 @@ def search_and_result(request):
 
     #SQL kakeru baai
     with db_connect().cursor() as cursor:
-        sql = "SELECT {} FROM lecture WHERE LectureName like %s".format(','.join(columns))
-        cursor.execute(sql,("%{}%".format(lecname),))
+        sql = "SELECT {} FROM lecture WHERE LectureName like %s OR Professor like %s".format(','.join(columns))
+        cursor.execute(sql,("%{}%".format(keyword), "%{}%".format(keyword)))
         dbdata = cursor.fetchall()
 
         content = ((row["LectureName"],row["Department"],row["Professor"],row["LectureCode"],row["DateRoom"],row['Quarter']) for row in dbdata)
@@ -95,14 +95,14 @@ def search_and_result(request):
         'result_content' : result_content,
         'series_list' : series_list,
         'opening_department_list' : opening_department_list,
-        'lectureName' : lecname,
+        'keyWord' : keyword,
         }
     return render(request, 'searchAndResult.html', d)
 
 
 def lecture(request):
     # クエリから得られる情報
-    code = request.GET.get("code")    # 講義名
+    code = request.GET.get("code")    # 講義コード
 
 
     with db_connect().cursor() as cursor:
